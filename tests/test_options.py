@@ -50,13 +50,22 @@ def test_options():
     assert flags[4] == ('-p', 7)
     assert flags[5] == ('--longoption', '19')
     assert extra == ['hanky']
-    assert (opt.t, opt.q, opt.p, opt.l, opt.onlylong,
-              opt.neveropt) == (3,1,7,19,1,None)
-    assert (opt.deftest1, opt.deftest2, opt.deftest3, opt.deftest4,
-              opt.deftest5) == (1,2,None,None,'[square')
+    assert opt.t == 3
+    assert opt.q == 1
+    assert opt.p == 7
+    assert opt.l == 19
+    assert opt.onlylong == 1
+    assert opt.neveropt == None
+    assert opt.deftest1 == 1
+    assert opt.deftest2 == 2
+    assert opt.deftest3 == None
+    assert opt.deftest4 == None
+    assert opt.deftest5 == '[square'
     assert (opt.stupid, opt.no_stupid) == (True, False)
     assert opt['#'] == 7
     assert opt.compress == 7
 
     (opt,flags,extra) = o.parse(['--onlylong', '-t', '--no-onlylong'])
-    assert (opt.t, opt.q, opt.onlylong) == (1, None, 0)
+    assert opt.t == 1
+    assert opt.q ==  None
+    assert opt.onlylong == 0
