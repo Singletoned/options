@@ -107,3 +107,13 @@ def test_atoi():
     assert options._atoi("1") is 1
     assert options._atoi(None) is 0
     assert options._atoi(True) is 1
+
+
+def test_remove_negative_kv():
+    assert options._remove_negative_kv("no_foo", 0) == ("foo", True)
+    assert options._remove_negative_kv("no-foo", "one") == ("foo", False)
+
+
+def test_remove_negative_k():
+    assert options._remove_negative_k("no_foo") == ("foo")
+    assert options._remove_negative_k("no-foo") == ("foo")
