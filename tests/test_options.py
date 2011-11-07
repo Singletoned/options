@@ -91,3 +91,11 @@ def test_options():
     assert opt.t == 1
     assert opt.q ==  None
     assert opt.onlylong == 0
+
+
+def test_intify():
+    assert options._intify(1) is 1
+    assert options._intify("1") is 1
+    assert options._intify("one") is "one"
+    assert options._intify(None) is None
+    assert options._intify(True) is True
