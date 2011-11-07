@@ -99,3 +99,11 @@ def test_intify():
     assert options._intify("one") is "one"
     assert options._intify(None) is None
     assert options._intify(True) is True
+
+
+def test_atoi():
+    assert options._atoi(1) is 1
+    assert options._atoi("one") is 0
+    assert options._atoi("1") is 1
+    assert options._atoi(None) is 0
+    assert options._atoi(True) is 1
