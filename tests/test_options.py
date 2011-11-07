@@ -7,10 +7,12 @@ def test_optdict():
     d['z'] = 99
     d['no_other_thing'] = 5
     assert d.x == 5
+    assert d['x'] == 5
     assert d.y == 4
     assert d.z == 99
     assert d.no_z == False
     assert d.no_other_thing == True
+    assert d.other_thing == False
     try:
         d.p
     except KeyError:
@@ -18,6 +20,26 @@ def test_optdict():
     else:
         assert False
 
+def test_optdict_more():
+    d = options.OptDict()
+    d['x'] = 5
+    d['y'] = 4
+    d['z'] = 99
+    d['no_foo'] = 7
+    d['no-bar'] = 11
+    
+    for k, v in [('x', 5), ('y', 4), ('z', 99)]:
+        assert getattr(d, k) == v
+        assert d[k] == v
+        assert getattr(d, "no_%s"%k) == False
+        assert d["no_%s"%k] == False
+        assert d["no-%s"%k] == False
+
+    for k in ['foo', 'bar']:
+        assert d[k] == False
+        assert getattr(d, k) == False
+        assert d["no_%s"%k] == True
+        assert d["no-%s"%k] == True
 
 optspec = """
 prog <optionset> [stuff...]
