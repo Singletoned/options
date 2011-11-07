@@ -93,6 +93,28 @@ def test_options():
     assert opt.onlylong == 0
 
 
+def test_options_more():
+    o = options.Options(optspec)
+    expected = """
+usage: prog <optionset> [stuff...]
+   or: prog [-t] <boggle>
+
+    -t                    test
+    -q, --quiet           quiet
+    -l, --longoption ...  long option with parameters and a really really long description that will require wrapping
+    -p ...                short option with parameters
+    --onlylong            long option with no short
+    --neveropt            never called options
+    --deftest1 ...        a default option with default [1]
+    --deftest2 ...        a default option with [1] default [2]
+    --deftest3 ...        a default option with [3] no actual default
+    --deftest4 ...        a default option with [[square]]
+    --deftest5 ...        a default option with "correct" [[square]
+    --no-stupid           disable stupidity
+    -#, --compress ...    set compression level [5]""".strip()
+    assert o._usagestr.strip() == expected
+
+
 def test_intify():
     assert options._intify(1) is 1
     assert options._intify("1") is 1
