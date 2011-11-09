@@ -93,7 +93,7 @@ def test_options():
     assert opt.onlylong == 0
 
 
-def test_options_more():
+def test_usagestr():
     o = options.Options(optspec)
     expected = """
 usage: prog <optionset> [stuff...]
