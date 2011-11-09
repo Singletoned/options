@@ -220,6 +220,7 @@ class Options:
             k = k.lstrip('-')
             if k in ('h', '?', 'help', 'usage'):
                 self.usage()
+                return
             if k.startswith('no-'):
                 k = self._aliases[k[3:]]
                 v = 0

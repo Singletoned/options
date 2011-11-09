@@ -115,6 +115,11 @@ usage: prog <optionset> [stuff...]
     assert o._usagestr.strip() == expected
 
 
+def test_parse():
+    o = options.Options(optspec, onabort=None)
+    assert o.parse(['-h']) == None
+
+
 def test_intify():
     assert options._intify(1) is 1
     assert options._intify("1") is 1
