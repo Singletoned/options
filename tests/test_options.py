@@ -19,6 +19,8 @@ def test_optdict():
         pass
     else:
         assert False
+    print d
+    print repr(d)
 
 def test_optdict_more():
     d = options.OptDict()

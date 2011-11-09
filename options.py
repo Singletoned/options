@@ -40,6 +40,12 @@ class OptDict:
     def __init__(self):
         self._opts = {}
 
+    def __repr__(self):
+        return "<OptDict %s>" % self._opts
+
+    def __str__(self):
+        return "<OptDict %s>" % self._opts
+
     def __setitem__(self, k, v):
         if k.startswith('no-') or k.startswith('no_'):
             k = k[3:]
