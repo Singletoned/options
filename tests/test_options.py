@@ -65,7 +65,7 @@ no-stupid  disable stupidity
 
 def test_options():
     o = options.Options(optspec)
-    (opt,flags,extra) = o.parse(['-tttqp', 7, '--longoption', '19',
+    (opt, flags, extra) = o.parse(['-tttqp', 7, '--longoption', '19',
                                  'hanky', '--onlylong', '-7'])
     assert flags[0] == ('-t', '')
     assert flags[1] == ('-t', '')
@@ -89,7 +89,7 @@ def test_options():
     assert opt['#'] == 7
     assert opt.compress == 7
 
-    (opt,flags,extra) = o.parse(['--onlylong', '-t', '--no-onlylong'])
+    (opt, flags, extra) = o.parse(['--onlylong', '-t', '--no-onlylong'])
     assert opt.t == 1
     assert opt.q ==  None
     assert opt.onlylong == 0
