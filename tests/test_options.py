@@ -27,7 +27,7 @@ def test_optdict_more():
     d['z'] = 99
     d['no_foo'] = 7
     d['no-bar'] = 11
-    
+
     for k, v in [('x', 5), ('y', 4), ('z', 99)]:
         assert getattr(d, k) == v
         assert d[k] == v
