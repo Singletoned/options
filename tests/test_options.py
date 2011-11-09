@@ -121,6 +121,11 @@ def test_parse():
     o = options.Options(optspec, onabort=None)
     assert o.parse(['-h']) == None
 
+    (opt, flags, extra) = o.parse(["-t"])
+
+    assert flags == [('-t', '')]
+    assert not extra
+
 
 def test_intify():
     assert options._intify(1) is 1
