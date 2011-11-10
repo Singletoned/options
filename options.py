@@ -35,6 +35,9 @@ import sys, os, textwrap, getopt, re, struct, contextlib
 class UsageRequested(Exception):
     pass
 
+class UsageError(Exception):
+    pass
+
 
 @contextlib.contextmanager
 def ErrorHandler(parser):
@@ -42,6 +45,8 @@ def ErrorHandler(parser):
         yield
     except UsageRequested:
         parser.usage()
+    except UsageError:
+        parser.fatal(None)
 
 
 class OptDict:
@@ -227,7 +232,7 @@ class Options:
         try:
             (flags,extra) = self.optfunc(args, self._shortopts, self._longopts)
         except getopt.GetoptError, e:
-            self.fatal(e)
+            raise UsageError()
 
         opt = OptDict()
 

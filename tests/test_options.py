@@ -144,6 +144,9 @@ def test_without_error_handling():
     with raises(options.UsageRequested):
         o.parse(['-h'])
 
+    with raises(options.UsageError):
+        o.parse(['--foo'])
+
 
 def test_intify():
     assert options._intify(1) is 1
