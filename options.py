@@ -29,7 +29,20 @@ Options can be put in different groups. Options in the same group must be on
 consecutive lines. Groups are formed by inserting a line that begins with a
 space. The text on that line will be output after an empty line.
 """
-import sys, os, textwrap, getopt, re, struct
+import sys, os, textwrap, getopt, re, struct, contextlib
+
+
+class UsageRequested(Exception):
+    pass
+
+
+@contextlib.contextmanager
+def ErrorHandler(parser):
+    try:
+        yield
+    except UsageRequested:
+        parser.usage()
+
 
 class OptDict:
     """Dictionary that exposes keys as attributes.
@@ -225,8 +238,7 @@ class Options:
         for (k,v) in flags:
             k = k.lstrip('-')
             if k in ('h', '?', 'help', 'usage'):
-                self.usage()
-                return
+                raise UsageRequested()
             if k.startswith('no-'):
                 k = self._aliases[k[3:]]
                 v = 0

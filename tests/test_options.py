@@ -1,4 +1,15 @@
+import contextlib
+
 import options
+
+
+@contextlib.contextmanager
+def raises(error):
+    try:
+        yield
+    except error:
+        pass
+
 
 def test_optdict():
     d = options.OptDict()
@@ -119,12 +130,19 @@ usage: prog <optionset> [stuff...]
 
 def test_parse():
     o = options.Options(optspec, onabort=None)
-    assert o.parse(['-h']) == None
+    with raises(options.UsageRequested):
+        assert o.parse(['-h']) == None
 
     (opt, flags, extra) = o.parse(["-t"])
 
     assert flags == [('-t', '')]
     assert not extra
+
+
+def test_without_error_handling():
+    o = options.Options(optspec)
+    with raises(options.UsageRequested):
+        o.parse(['-h'])
 
 
 def test_intify():
