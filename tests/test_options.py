@@ -130,6 +130,11 @@ def test_show_usage():
             o.show_usage()
             assert o.usage in mock_stderr._data
 
+    with utils.stderr_patcher as mock_stderr:
+        with utils.raises(utils.MockError):
+            o.show_usage("This is a message")
+            assert o.usage in mock_stderr._data
+            assert "This is a message" in mock_stderr._data
 
 def test_parse():
     o = options.Options(optspec, onabort=None)
