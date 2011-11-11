@@ -79,7 +79,7 @@ class OptDict:
         return self[k]
 
 
-def _default_onabort(msg):
+def exiting_onabort(msg):
     sys.exit(97)
 
 
@@ -133,7 +133,7 @@ class Options:
     behaviour is to exit the program.
     """
     def __init__(self, optspec, optfunc=getopt.gnu_getopt,
-                 onabort=_default_onabort):
+                 onabort=None):
         self.optspec = optspec
         self._onabort = onabort
         self.optfunc = optfunc

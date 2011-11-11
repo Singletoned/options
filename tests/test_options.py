@@ -121,6 +121,17 @@ usage: prog <optionset> [stuff...]
 
 
 def test_show_usage():
+    o = options.Options(optspec)
+
+    with utils.stderr_patcher as mock_stderr:
+        o.show_usage()
+        assert o.usage in mock_stderr._data
+
+    with utils.stderr_patcher as mock_stderr:
+        o.show_usage("This is a message")
+        assert o.usage in mock_stderr._data
+        assert "This is a message" in mock_stderr._data
+
     o = options.Options(
         optspec,
         onabort=utils.mock_onabort)
