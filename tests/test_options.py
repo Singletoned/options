@@ -121,15 +121,11 @@ usage: prog <optionset> [stuff...]
 
 
 def test_show_usage():
-    class MockError(Exception):
-        pass
+    o = options.Options(
+        optspec,
+        onabort=utils.mock_onabort)
 
-    def mock_onabort(msg):
-        raise MockError(msg)
-
-    o = options.Options(optspec, onabort=mock_onabort)
-
-    with utils.raises(MockError):
+    with utils.raises(utils.MockError):
         o.show_usage()
 
 
@@ -154,30 +150,15 @@ def test_without_error_handling():
 
 
 def test_with_error_handling():
-    class MockError(Exception):
-        pass
+    o = options.Options(optspec, onabort=utils.mock_onabort)
 
-    def mock_onabort(msg):
-        raise MockError(msg)
-
-    class MockStdErr(object):
-        _data = []
-
-        def write(self, text):
-            self._data.append(text)
-
-    o = options.Options(optspec, onabort=mock_onabort)
-
-    stderr_patcher = mock.patch.object(
-        sys, 'stderr', MockStdErr())
-
-    with stderr_patcher as mock_stderr:
-        with utils.raises(MockError):
+    with utils.stderr_patcher as mock_stderr:
+        with utils.raises(utils.MockError):
             with options.ErrorHandler(o):
                 o.parse(['-h'])
                 assert o.usage in mock_stderr._data
 
-    with utils.raises(MockError):
+    with utils.raises(utils.MockError):
         with options.ErrorHandler(o):
             o.parse(['--foo'])
 
