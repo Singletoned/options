@@ -32,19 +32,34 @@ space. The text on that line will be output after an empty line.
 >>> o = options.Options('''
 ... prog <options> [stuff...]
 ... --
-... t       test
-... q,quiet   quiet
-... l,longoption=   long option with parameters and a really really long description that will require wrapping
+... t test
+... q,quiet quiet
+... l,longoption= long option with parameters
 ... p= short option with parameters
 ... onlylong  long option with no short
 ... ''')
->>> print o._usagestr
+>>> o.show_usage()
 usage: prog <options> [stuff...]
 
     -t                    test
     -q, --quiet           quiet
-    -l, --longoption ...  long option with parameters and a really really long description that will require wrapping
+    -l, --longoption ...  long option with parameters
     -p ...                short option with parameters
     --onlylong            long option with no short
-
+>>> opts, flags, extra = o.parse(
+...       ["-t", "flange", "-p", "flibble", "--longoption=flimble"])
+>>> opts
+<OptDict {'onlylong': None, 'quiet': None, 'l': 'flimble', 'q': None, 'p': 'flibble', 't': 1, 'longoption': 'flimble'}>
+>>> flags
+[('-t', ''), ('-p', 'flibble'), ('--longoption', 'flimble')]
+>>> extra
+['flange']
 >>> 
+>>> opts.t
+1
+>>> opts.p
+'flibble'
+>>> opts.longoption
+'flimble'
+>>> opts.no_longoption
+False
