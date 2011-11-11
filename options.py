@@ -142,7 +142,7 @@ class Options:
         self._longopts = ['help', 'usage']
         self._hasparms = {}
         self._defaults = {}
-        self._usagestr = self._gen_usage()
+        self.usage = self._gen_usage()
 
     def _gen_usage(self):
         out = []
@@ -210,7 +210,7 @@ class Options:
 
     def show_usage(self, msg=""):
         """Print usage string to stderr and abort."""
-        sys.stderr.write(self._usagestr)
+        sys.stderr.write(self.usage)
         if msg:
             sys.stderr.write(msg)
         e = self._onabort and self._onabort(msg) or None

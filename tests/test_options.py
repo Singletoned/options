@@ -106,7 +106,7 @@ def test_options():
     assert opt.onlylong == 0
 
 
-def test_usagestr():
+def test_usage():
     o = options.Options(optspec)
     expected = """
 usage: prog <optionset> [stuff...]
@@ -125,7 +125,7 @@ usage: prog <optionset> [stuff...]
     --deftest5 ...        a default option with "correct" [[square]
     --no-stupid           disable stupidity
     -#, --compress ...    set compression level [5]""".strip()
-    assert o._usagestr.strip() == expected
+    assert o.usage.strip() == expected
 
 
 def test_show_usage():
