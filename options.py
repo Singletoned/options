@@ -44,7 +44,7 @@ def ErrorHandler(parser):
     try:
         yield
     except UsageRequested:
-        parser.usage()
+        parser.show_usage()
     except UsageError:
         parser.fatal(None)
 
@@ -208,7 +208,7 @@ class Options:
                 last_was_option = False
         return ''.join(out).rstrip() + '\n'
 
-    def usage(self, msg=""):
+    def show_usage(self, msg=""):
         """Print usage string to stderr and abort."""
         sys.stderr.write(self._usagestr)
         if msg:
@@ -220,7 +220,7 @@ class Options:
     def fatal(self, msg):
         """Print an error message to stderr and abort with usage string."""
         msg = '\nerror: %s\n' % msg
-        return self.usage(msg)
+        return self.show_usage(msg)
 
     def parse(self, args):
         """Parse a list of arguments and return (options, flags, extra).

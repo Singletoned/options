@@ -128,6 +128,19 @@ usage: prog <optionset> [stuff...]
     assert o._usagestr.strip() == expected
 
 
+def test_show_usage():
+    class MockError(Exception):
+        pass
+
+    def mock_onabort(msg):
+        raise MockError(msg)
+
+    o = options.Options(optspec, onabort=mock_onabort)
+
+    with raises(MockError):
+        o.show_usage()
+
+
 def test_parse():
     o = options.Options(optspec, onabort=None)
     with raises(options.UsageRequested):
