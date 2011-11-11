@@ -125,8 +125,10 @@ def test_show_usage():
         optspec,
         onabort=utils.mock_onabort)
 
-    with utils.raises(utils.MockError):
-        o.show_usage()
+    with utils.stderr_patcher as mock_stderr:
+        with utils.raises(utils.MockError):
+            o.show_usage()
+            assert o.usage in mock_stderr._data
 
 
 def test_parse():
@@ -158,9 +160,11 @@ def test_with_error_handling():
                 o.parse(['-h'])
                 assert o.usage in mock_stderr._data
 
-    with utils.raises(utils.MockError):
-        with options.ErrorHandler(o):
-            o.parse(['--foo'])
+    with utils.stderr_patcher as mock_stderr:
+        with utils.raises(utils.MockError):
+            with options.ErrorHandler(o):
+                o.parse(['--foo'])
+                assert o.usage in mock_stderr._data
 
 
 def test_intify():
