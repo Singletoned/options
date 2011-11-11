@@ -1,4 +1,6 @@
-import options, utils
+import options, utils, sys
+
+import mock
 
 
 def test_optdict():
@@ -158,11 +160,22 @@ def test_with_error_handling():
     def mock_onabort(msg):
         raise MockError(msg)
 
+    class MockStdErr(object):
+        _data = []
+
+        def write(self, text):
+            self._data.append(text)
+
     o = options.Options(optspec, onabort=mock_onabort)
 
-    with utils.raises(MockError):
-        with options.ErrorHandler(o):
-            o.parse(['-h'])
+    stderr_patcher = mock.patch.object(
+        sys, 'stderr', MockStdErr())
+
+    with stderr_patcher as mock_stderr:
+        with utils.raises(MockError):
+            with options.ErrorHandler(o):
+                o.parse(['-h'])
+                assert o.usage in mock_stderr._data
 
     with utils.raises(MockError):
         with options.ErrorHandler(o):
