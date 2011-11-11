@@ -148,6 +148,24 @@ def test_without_error_handling():
         o.parse(['--foo'])
 
 
+def test_with_error_handling():
+    class MockError(Exception):
+        pass
+
+    def mock_onabort(msg):
+        raise MockError(msg)
+
+    o = options.Options(optspec, onabort=mock_onabort)
+
+    with raises(MockError):
+        with options.ErrorHandler(o):
+            o.parse(['-h'])
+
+    with raises(MockError):
+        with options.ErrorHandler(o):
+            o.parse(['--foo'])
+
+
 def test_intify():
     assert options._intify(1) is 1
     assert options._intify("1") is 1
