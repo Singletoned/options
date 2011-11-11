@@ -1,14 +1,4 @@
-import contextlib
-
-import options
-
-
-@contextlib.contextmanager
-def raises(error):
-    try:
-        yield
-    except error:
-        pass
+import options, utils
 
 
 def test_optdict():
@@ -137,13 +127,13 @@ def test_show_usage():
 
     o = options.Options(optspec, onabort=mock_onabort)
 
-    with raises(MockError):
+    with utils.raises(MockError):
         o.show_usage()
 
 
 def test_parse():
     o = options.Options(optspec, onabort=None)
-    with raises(options.UsageRequested):
+    with utils.raises(options.UsageRequested):
         assert o.parse(['-h']) == None
 
     (opt, flags, extra) = o.parse(["-t"])
@@ -154,10 +144,10 @@ def test_parse():
 
 def test_without_error_handling():
     o = options.Options(optspec)
-    with raises(options.UsageRequested):
+    with utils.raises(options.UsageRequested):
         o.parse(['-h'])
 
-    with raises(options.UsageError):
+    with utils.raises(options.UsageError):
         o.parse(['--foo'])
 
 
@@ -170,11 +160,11 @@ def test_with_error_handling():
 
     o = options.Options(optspec, onabort=mock_onabort)
 
-    with raises(MockError):
+    with utils.raises(MockError):
         with options.ErrorHandler(o):
             o.parse(['-h'])
 
-    with raises(MockError):
+    with utils.raises(MockError):
         with options.ErrorHandler(o):
             o.parse(['--foo'])
 
